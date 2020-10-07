@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css">
-    <link rel="stylesheet" href="css/styles-old.css">
+    <link rel="stylesheet" href="css/dist/styles.css">
 
     <title>Ristorante Con Fusion</title>
 </head>
@@ -34,7 +34,8 @@
                 </ul>
 
                 <span class="navbar-text">
-                    <a data-toggle="modal" data-target="#loginModal">
+                    <!-- <a data-toggle="modal" data-target="#loginModal"> -->
+                    <a id="loginstuff">
                         <span class="fa fa-sign-in "></span> Login
                     </a>
                 </span>
@@ -160,7 +161,8 @@
                     <img src="img/logo.png" alt="" class="img-fluid">
                 </div>
                 <div class="col-12 col-sm-3 justify-content-center align-self-center">
-                    <a href="#reserve-table" class="btn btn-block bg-warning text-white" data-toggle="modal" data-target="#reservationModal">Reserve Table</a>
+                    <!-- <a href="#reserve-table" class="btn btn-block bg-warning text-white" data-toggle="modal" data-target="#reservationModal">Reserve Table</a> -->
+                    <a href="#reserve-table" class="btn btn-block bg-warning text-white" id="reservation">Reserve Table</a>
                 </div>
             </div>
         </div>
@@ -345,6 +347,15 @@
                     $("#carouselButton").children("span").addClass("fa-pause");
                 };
                 
+            });
+
+            //Modal Tables with jQuery
+            $("#reservation").click(function () {
+                $('#reservationModal').modal('show')
+            });
+
+            $("#loginstuff").click(function () {
+                $('#loginModal').modal('show')
             });
            
         });
