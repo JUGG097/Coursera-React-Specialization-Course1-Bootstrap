@@ -3,7 +3,15 @@
 // const browserSync = require('browser-sync');
 var gulp = require('gulp'), 
     sass = require('gulp-sass'),
-    browserSync = require('browser-sync');
+    browserSync = require('browser-sync'),
+    del = require('del'),
+    imagemin = require('gulp-imagemin'),
+    uglify = require('gulp-uglify'),
+    usemin = require('gulp-usemin'),
+    rev = require('gulp-rev'),
+    cleanCss = require('gulp-clean-css'),
+    flatmap = require('gulp-flatmap'),
+    htmlmin = require('gulp-htmlmin');
 
 gulp.task('sass', function() {
     return gulp.src('./css/*.scss')
@@ -35,4 +43,44 @@ gulp.task('sass:watch', function() {
 // });
 gulp.task('default', function() {
     gulp.start('sass:watch');
+});
+
+gulp.task('clean', function() {
+    return del(['dist2']);
+});
+
+gulp.task('copyfonts', function() {
+    gulp.src('./node_modules/font-awesome/fonts/**/*.{ttf,woff,eof,svg}*')
+    .pipe(gulp.dest('./dist2/fonts'));
+});
+
+gulp.task('imagemin', function() {
+    return gulp.src('./img/*.{jpg,png,gif}')
+    .pipe(imagemin({
+        optimizationLevel: 3, 
+        progressive: true, 
+        interlaced: true 
+    }))
+    .pipe(gulp.dest('./dist2/img'));
+});
+
+gulp.task('usemin', function() {
+    return gulp.src('./*.html')
+    .pipe(flatmap(function (stream, file) {
+        return stream
+        .pipe(usemin({
+            css: [rev()], 
+            html: [function() {return htmlmin({
+                collapseWhitespace: true
+            })}],
+            js: [uglify(), rev()],
+            inlinejs: [uglify()],
+            inlinecss: [cleanCss(), 'concat']
+        }))
+    }))
+    .pipe(gulp.dest('dist2/'));
+});
+
+gulp.task('build', ['clean'], function() {
+    gulp.start('copyfonts', 'imagemin', 'usemin');
 });
